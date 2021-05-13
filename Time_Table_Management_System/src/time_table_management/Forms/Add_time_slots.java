@@ -5,18 +5,33 @@
  */
 package time_table_management.Forms;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import mycode.DBconnect;
+import net.proteanit.sql.DbUtils;
+
 /**
  *
  * @author ASUS
  */
 public class Add_time_slots extends javax.swing.JFrame {
+    
+    Connection con = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
 
     /**
      * Creates new form Add_time_slots
      */
     public Add_time_slots() {
         initComponents();
+        
+        con = DBconnect.connect();
+        
     }
+   
+ 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,12 +47,13 @@ public class Add_time_slots extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        sttimebox = new javax.swing.JComboBox();
+        endtimebox = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Add time slot");
 
         jPanel1.setBackground(new java.awt.Color(176, 224, 230));
 
@@ -49,12 +65,6 @@ public class Add_time_slots extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setText("End time");
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton1.setText("ADD");
@@ -72,6 +82,10 @@ public class Add_time_slots extends javax.swing.JFrame {
             }
         });
 
+        sttimebox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "8.30 a.m", "9.00 a.m", "9.30 a.m", "10.00 a.m", "10.30 a.m", "11.00 a.m", "11.30 a.m", "12.00 p.m", "12.30 p.m", "1.00 p.m", "1.30 p.m", "2.00 p.m", "2.30 p.m", "3.00 p.m", "3.30 p.m", "4.00 p.m", "4.30 p.m", "5.00 p.m", "5.30 p.m" }));
+
+        endtimebox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "9.00 a.m", "9.30 a.m", "10.00 a.m", "10.30 a.m", "11.00 a.m", "11.30 a.m", "12.00 p.m", "12.30 p.m", "1.00 p.m", "1.30 p.m", "2.00 p.m", "2.30 p.m", "3.00 p.m", "3.30 p.m", "4.00 p.m", "4.30 p.m", "5.00 p.m", "5.30 p.m" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -83,16 +97,16 @@ public class Add_time_slots extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
                             .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
-                            .addComponent(jTextField2)))
+                            .addComponent(sttimebox, 0, 122, Short.MAX_VALUE)
+                            .addComponent(endtimebox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(97, 97, 97)
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 110, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -109,13 +123,13 @@ public class Add_time_slots extends javax.swing.JFrame {
                 .addGap(13, 13, 13)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(90, 90, 90)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(69, 69, 69)
+                    .addComponent(sttimebox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(67, 67, 67)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(endtimebox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -137,15 +151,28 @@ public class Add_time_slots extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
          
+       
+       
+       String start = sttimebox.getSelectedItem().toString();
+       String end = endtimebox.getSelectedItem().toString();
+       
+       try{
+       
+           
+       String q = "INSERT INTO time_slots(start_time, end_time) values('"+ start +"','"+ end +"')";
+       pst = con.prepareStatement(q);
+       pst.execute();
+       
        Time_slots ts1 =new Time_slots();
        ts1.setVisible(true);
+       
        this.dispose();
+       
+     
+       }catch(Exception e){
+       }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -188,6 +215,7 @@ public class Add_time_slots extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox endtimebox;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -195,7 +223,6 @@ public class Add_time_slots extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JComboBox sttimebox;
     // End of variables declaration//GEN-END:variables
 }

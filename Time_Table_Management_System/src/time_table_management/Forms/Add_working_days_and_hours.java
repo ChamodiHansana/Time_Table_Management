@@ -7,7 +7,8 @@ package time_table_management.Forms;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-//import mycode.DBconnect;
+import mycode.DBconnect;
+
 
 /**
  *
@@ -17,6 +18,7 @@ public class Add_working_days_and_hours extends javax.swing.JFrame {
     
     Connection con = null;
     PreparedStatement pst = null;
+    
     /**
      * Creates new form Add_working_days_and_hours
      */
@@ -24,7 +26,7 @@ public class Add_working_days_and_hours extends javax.swing.JFrame {
         initComponents();
         
         //connect to DB
-       // con = DBconnect.connect();
+       con = DBconnect.connect();
     }
 
     /**
@@ -54,6 +56,7 @@ public class Add_working_days_and_hours extends javax.swing.JFrame {
         nowrkdays = new javax.swing.JTextField();
         nohrsbox = new javax.swing.JTextField();
         nominbox = new javax.swing.JTextField();
+        alert = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Add working days and hours");
@@ -164,11 +167,17 @@ public class Add_working_days_and_hours extends javax.swing.JFrame {
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(nominbox))))
                 .addContainerGap(201, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(alert, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(82, 82, 82)
+                .addGap(21, 21, 21)
+                .addComponent(alert, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
                 .addComponent(jLabel1)
                 .addGap(84, 84, 84)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -209,7 +218,7 @@ public class Add_working_days_and_hours extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -220,44 +229,72 @@ public class Add_working_days_and_hours extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      
-       Working_days_and_hours wh1=new Working_days_and_hours();
-       wh1.setVisible(true);
-       this.dispose();
+
+       if(nowrkdays.getText().trim().isEmpty()&& nohrsbox.getText().trim().isEmpty()&& nominbox.getText().trim().isEmpty()){
+        alert.setText("fields are empty");
+            
+       }
+       else if(nowrkdays.getText().trim().isEmpty()){
+        alert.setText("No of working days are empty");
+       }
+       else if (nohrsbox.getText().trim().isEmpty()){
+           alert.setText("No of working hours are empty");
+       }
+       else if(nominbox.getText().trim().isEmpty()){
+            alert.setText("No of working hours are empty");
+       }
+       else{
+       
+       }
+       
+    
        
        String nodays = nowrkdays.getText();
        String nohrs = nohrsbox.getText();
         String nomin = nominbox.getText();
-        String workdays = " ";
-        
-        if(monday.isSelected()){
-            workdays = workdays + "monday";
-        }
-        if(tuesday.isSelected()){
-            workdays = workdays +" "+ "tuesday";
-        }
-        if(wednesday.isSelected()){
-            workdays = workdays + " "+"wednesday";
-        }
-        if(thursday.isSelected()){
-            workdays = workdays + " "+"thursday";
-        }
-        if(friday.isSelected()){
-            workdays = workdays +" "+ "friday";
-        }
-        if(saturday.isSelected()){
-            workdays = workdays + " "+"saturday";
-        }
-        if(sunday.isSelected()){
-            workdays = workdays +" "+ "sunday";
-        }
+        String mon="";
+        String tue="";
+        String wed="";
+        String thu="";
+        String fri="";
+        String sat="";
+        String sun="";
+    
         
         
         
       try{
-            String q = "INSERT INTO working_days_and_hrs (noofworkingdays,workinghrsperday, workingminperday, workingdays) values ('"+nodays+"' , '"+nohrs+"', '"+nomin+"', '"+workdays+"')";
+          
+         if(monday.isSelected()){
+            mon = monday.getText();
+        }
+        if(tuesday.isSelected()){
+             tue = tuesday.getText();
+        }
+        if(wednesday.isSelected()){
+             wed = wednesday.getText();
+        }
+        if(thursday.isSelected()){
+            thu = thursday.getText();
+        }
+        if(friday.isSelected()){
+             fri = friday.getText();
+        }
+        if(saturday.isSelected()){
+             sat = saturday.getText();
+        }
+        if(sunday.isSelected()){
+             sun = sunday.getText();
+     
+        
+        }
+            String q = "INSERT INTO working_days_and_hrs (noofworkingdays,workinghrsperday, workingminperday, monday, tuesday, wednesday, thursday, friday, saturday, sunday) values ('"+nodays+"' , '"+nohrs+"', '"+nomin+"', '"+mon+"',  '"+tue+"',  '"+wed+"',  '"+thu+"',  '"+fri+"',  '"+sat+"',  '"+sun+"')";
         pst = con.prepareStatement(q);
         pst.execute();
+        
+           Working_days_and_hours wh1=new Working_days_and_hours();
+       wh1.setVisible(true);
+       this.dispose();
           
       }catch(Exception e){
       
@@ -306,6 +343,7 @@ public class Add_working_days_and_hours extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel alert;
     private javax.swing.JCheckBox friday;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
