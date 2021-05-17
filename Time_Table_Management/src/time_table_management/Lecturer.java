@@ -6,21 +6,56 @@
 package time_table_management;
 
 
-import javax.swing.WindowConstants;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.TableModel;
+import javax.swing.JTextField;
+import mycode.DBconnect;
+import net.proteanit.sql.DbUtils;
 
+ 
 /**
  *
  * @author SINGER
  */
 public class Lecturer extends javax.swing.JFrame {
 
+     ResultSet rs = null;
+     Connection con = null;
+    PreparedStatement pst = null;
     /**
      * Creates new form Lecturer
      */
     public Lecturer() {
         initComponents();
+        
+           //connect to db
+        con =  DBconnect.connect();
+        
+        //table load
+        LecTableLoad();
     }
-
+    public Lecturer(String para){
+     initComponents();
+    }
+      public void LecTableLoad(){
+   
+          try {
+               
+                 String sql ="Select empID,name,faculty,center,building,level,rank,department,workingHrs,monday,tuesday,wednesday,thursday,friday,saturday,sunday FROM lecturer";
+                 pst = con.prepareStatement(sql);
+                 rs =pst.executeQuery();
+    
+                 LecTable.setModel(DbUtils.resultSetToTableModel(rs));
+          } catch (Exception e) {
+              System.out.println("lec table load"+e);
+          }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -53,21 +88,28 @@ public class Lecturer extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
-        jTextField9 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox();
-        jComboBox2 = new javax.swing.JComboBox();
-        jComboBox3 = new javax.swing.JComboBox();
-        jComboBox4 = new javax.swing.JComboBox();
-        jComboBox5 = new javax.swing.JComboBox();
+        empId = new javax.swing.JTextField();
+        LecName = new javax.swing.JTextField();
+        Lfaculty = new javax.swing.JComboBox();
+        Dept = new javax.swing.JComboBox();
+        center = new javax.swing.JComboBox();
+        build = new javax.swing.JComboBox();
+        levl = new javax.swing.JComboBox();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        LecTable = new javax.swing.JTable();
         jButton4 = new javax.swing.JButton();
         jSpinner1 = new javax.swing.JSpinner();
+        mon = new javax.swing.JCheckBox();
+        sun = new javax.swing.JCheckBox();
+        sat = new javax.swing.JCheckBox();
+        tue = new javax.swing.JCheckBox();
+        wed = new javax.swing.JCheckBox();
+        thur = new javax.swing.JCheckBox();
+        fri = new javax.swing.JCheckBox();
+        rank = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -154,7 +196,7 @@ public class Lecturer extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addGap(185, 185, 185)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(111, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,48 +238,121 @@ public class Lecturer extends javax.swing.JFrame {
 
         jLabel14.setText("Working Hrs");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        empId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                empIdActionPerformed(evt);
+            }
+        });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        LecName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LecNameActionPerformed(evt);
+            }
+        });
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        Lfaculty.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Faculty", "Faculty Of Computing", "Faculty Of Business", "Faculty Of Engineering", "Faculty Of Huminaties & Sciences", "School Of Architecture", " " }));
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        Dept.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Department", "Department Of Information Technolodgy", "Department Of Computer Systems Enginering", "Department Of Computer Science &Software Enginering", "Department Of Business Management" }));
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        center.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Center", "Kandy", "Kurunegala", "Malabe", "Matara", "Metro", "Jaffna", " " }));
+
+        build.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Building", "building 1", "building 2", "building 3", "building 4" }));
+
+        levl.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Level of Lecturer", "Professor", "Assistant Professor", "Senior Lecturer(HG)", "Senior Lecturer", "Lecturer", "Assistance Lecturer", " " }));
 
         jButton2.setBackground(new java.awt.Color(153, 153, 153));
         jButton2.setText("UPDATE");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setBackground(new java.awt.Color(153, 153, 153));
         jButton3.setText("DELETE");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        LecTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Lecturer Name", "Employee ID", "Faculty", "Department", "Center", "Building", "Level", "Rank", "Working Days", "Working Hrs"
+                "Emp Id", "Lec Name", "Facul", "Center", "Building", "Level", "Rank", "Dept", "Work Hrs", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, true, false
+                false, false, false, false, false, false, false, false, true, false, true, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        LecTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                LecTableMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(LecTable);
 
         jButton4.setBackground(new java.awt.Color(153, 153, 153));
         jButton4.setText("Add New Lecturer");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
+            }
+        });
+
+        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(1, 1, 12, 1));
+
+        mon.setBackground(new java.awt.Color(176, 224, 230));
+        mon.setText("Monday");
+
+        sun.setBackground(new java.awt.Color(176, 224, 230));
+        sun.setText("Sunday");
+        sun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sunActionPerformed(evt);
+            }
+        });
+
+        sat.setBackground(new java.awt.Color(176, 224, 230));
+        sat.setText("Saturday");
+
+        tue.setBackground(new java.awt.Color(176, 224, 230));
+        tue.setText("Tuesday");
+        tue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tueActionPerformed(evt);
+            }
+        });
+
+        wed.setBackground(new java.awt.Color(176, 224, 230));
+        wed.setText("Wednesday");
+
+        thur.setBackground(new java.awt.Color(176, 224, 230));
+        thur.setText("Thursday");
+
+        fri.setBackground(new java.awt.Color(176, 224, 230));
+        fri.setText("Friday");
+        fri.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                friActionPerformed(evt);
+            }
+        });
+
+        jButton5.setBackground(new java.awt.Color(153, 153, 153));
+        jButton5.setText("Genarate Rank");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
             }
         });
 
@@ -257,48 +372,61 @@ public class Lecturer extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(349, 349, 349)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel5)
+                                        .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addComponent(jLabel10)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jLabel12))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
-                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jComboBox3, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(build, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(empId)
+                                        .addComponent(LecName)
+                                        .addComponent(Lfaculty, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(Dept, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(center, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(levl, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                        .addComponent(rank, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(5, 5, 5))))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel13)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel11)
-                                .addGap(101, 101, 101)
-                                .addComponent(jComboBox5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addGap(86, 86, 86)
-                                .addComponent(jComboBox4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jLabel14)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(52, 52, 52)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel14)
-                                .addGap(60, 60, 60)
-                                .addComponent(jSpinner1)))))
+                                .addComponent(jLabel13)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(sat)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(sun))
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(mon)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(tue)
+                                        .addGap(4, 4, 4)
+                                        .addComponent(wed)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(thur)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(fri)))))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(52, 52, 52))
         );
         jPanel3Layout.setVerticalGroup(
@@ -315,40 +443,53 @@ public class Lecturer extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(LecName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(22, 22, 22)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(empId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Lfaculty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Dept, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(22, 22, 22)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(center, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(build, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(levl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel12)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
+                    .addComponent(jButton5)
+                    .addComponent(rank, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel13))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(mon)
+                            .addComponent(tue)
+                            .addComponent(thur)
+                            .addComponent(fri)
+                            .addComponent(wed))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(sat)
+                            .addComponent(sun))))
+                .addGap(4, 4, 4)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel14)
                     .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -391,10 +532,295 @@ public class Lecturer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-      LecturerPopUp frameText = new LecturerPopUp();
+    
+       
+         LecturerPopUp frameText = new LecturerPopUp();
       frameText.setVisible(true);
-      
+     // this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void sunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sunActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sunActionPerformed
+
+    private void tueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tueActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tueActionPerformed
+
+    private void friActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_friActionPerformed
+     
+    }//GEN-LAST:event_friActionPerformed
+
+    private void LecTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LecTableMouseClicked
+      
+        int i = LecTable.getSelectedRow();
+        TableModel model = LecTable.getModel();
+        
+        LecName.setText(model.getValueAt(i,1).toString());
+        empId.setText(model.getValueAt(i,0).toString());
+        empId.setEditable(false);
+        String faculty =model.getValueAt(i,2).toString();
+            switch (faculty){
+                case "Faculty Of Computing":
+                    Lfaculty.setSelectedIndex(1);
+                    break;
+                case "Faculty Of Business":
+                    Lfaculty.setSelectedIndex(2);
+                    break;
+                case "Faculty Of Engineering":
+                    Lfaculty.setSelectedIndex(3);
+                    break;
+                case "Faculty Of Huminaties & Sciences":
+                    Lfaculty.setSelectedIndex(4);
+                    break;
+                case "School Of Architecture":
+                    Lfaculty.setSelectedIndex(5);
+                    break;
+            }
+        String department =model.getValueAt(i,7).toString();
+            switch (department){
+                case "Department Of Information Technolodgy":
+                    Dept.setSelectedIndex(1);
+                    break;
+                case "Department Of Computer Systems Enginering":
+                    Dept.setSelectedIndex(2);
+                    break;
+                case "Department Of Computer Science &Software Enginering":
+                    Dept.setSelectedIndex(3);
+                    break;
+                case "Department Of Business Management":
+                    Dept.setSelectedIndex(4);
+                    break;      
+            }
+        String Center=model.getValueAt(i,3).toString();
+              switch (Center){
+                case "Kandy":
+                    center.setSelectedIndex(1);
+                    break;
+                case "Kurunegala":
+                    center.setSelectedIndex(2);
+                    break;
+                case "Malabe":
+                    center.setSelectedIndex(3);
+                    break;
+                case "Metro":
+                    center.setSelectedIndex(4);
+                    break;  
+                case "Jaffna":
+                    center.setSelectedIndex(4);
+                    break;   
+            }
+ 
+        String building=model.getValueAt(i,4).toString();
+             switch (building){
+                case "building 1":
+                    build .setSelectedIndex(1);
+                    break;
+                case "building 2":
+                    build.setSelectedIndex(2);
+                    break;
+                case "building 3":
+                    build.setSelectedIndex(3);
+                    break;
+                case "building 4":
+                    build.setSelectedIndex(4);
+                    break;   
+            }
+            
+
+        String level=model.getValueAt(i,5).toString(); 
+             switch (level){
+                case "Professor":
+                    levl .setSelectedIndex(1);
+                    break;
+                case "Assistant Professor":
+                    levl.setSelectedIndex(2);
+                    break;
+                case "Senior Lecturer(HG)":
+                    levl.setSelectedIndex(3);
+                    break;
+                case "Senior Lecturer":
+                    levl.setSelectedIndex(4);
+                    break;   
+                case "Lecturer":
+                    levl.setSelectedIndex(4);
+                    break;   
+                case "Assistance Lecturer":
+                    levl.setSelectedIndex(4);
+                    break;   
+            }
+        rank.setText(model.getValueAt(i,6).toString()); 
+        String Mon =model.getValueAt(i,9).toString();
+        String Tue =model.getValueAt(i,10).toString(); 
+        String Wed =model.getValueAt(i,11).toString(); 
+        String Thur =model.getValueAt(i,12).toString(); 
+        String Fri =model.getValueAt(i,13).toString(); 
+        String Sat =model.getValueAt(i,14).toString();
+        String Sun =model.getValueAt(i,15).toString(); 
+       
+           if (Mon.equals("true")) {
+             mon.setSelected(true);
+            }
+             else{
+                  mon.setSelected(false);
+             }
+          
+             if (Tue.equals("true")) {
+             tue.setSelected(true);
+            }
+             else{
+                  tue.setSelected(false);
+             }
+             if (Wed.equals("true")) {
+             wed.setSelected(true);
+            }
+             else{
+                  wed.setSelected(false);
+             }
+            if (Thur.equals("true")) {
+             thur.setSelected(true);
+            }
+             else{
+                  thur.setSelected(false);
+             }
+          if (Fri.equals("true")) {
+             fri.setSelected(true);
+            }
+             else{
+                  fri.setSelected(false);
+             }
+           if (Sat.equals("true")) {
+             sat.setSelected(true);
+            }
+             else{
+                  sat.setSelected(false);
+             }
+            if (Sun.equals("true")) {
+             sun.setSelected(true);
+            }
+             else{
+                  sun.setSelected(false);
+             }
+       
+         jSpinner1.setValue((Integer)model.getValueAt(i,8)); 
+         //  int spinner = (int) jSpinner1.getValue();
+      //  System.out.println(spinner);
+        
+    }//GEN-LAST:event_LecTableMouseClicked
+
+    private void LecNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LecNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_LecNameActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+      int x= JOptionPane.showConfirmDialog(null, "Do you really want to update");
+      
+      if(x==0){
+      
+         String name = LecName.getText();
+      String Lid = empId.getText();
+      String fac = Lfaculty.getSelectedItem().toString();
+      String cent = center.getSelectedItem().toString();
+       String lbuild = build.getSelectedItem().toString();
+      String department = Dept.getSelectedItem().toString();
+      String Llevel = levl.getSelectedItem().toString();
+      String Lrank = rank.getText();
+      int wHrs = (int)jSpinner1.getValue();
+      
+       boolean monday = mon.isSelected();
+         String sMon = Boolean.toString(monday);
+      boolean tuesday = tue.isSelected();
+         String stue = Boolean.toString(tuesday);
+      boolean wednesday = wed.isSelected();
+         String swed = Boolean.toString(wednesday);
+      boolean thursday = thur.isSelected();
+         String sthur = Boolean.toString(thursday);
+      boolean friday = fri.isSelected();
+         String sfri = Boolean.toString(friday);
+      boolean saterday = sat.isSelected();
+         String ssat = Boolean.toString(saterday);
+      boolean sunday = sun.isSelected();
+         String ssun = Boolean.toString(sunday);
+      
+      String sql ="UPDATE lecturer SET name ='"+name+"',faculty ='"+fac+"',center ='"+cent+"',building ='"+lbuild+"',level ='"+Llevel+"',rank ='"+Lrank+"',department ='"+department+"',workingHrs ='"+wHrs+"',monday ='"+sMon+"',tuesday ='"+stue+"',wednesday ='"+swed+"',thursday ='"+stue+"',friday ='"+sfri+"',saturday ='"+ssat+"',sunday ='"+ssun+"' WHERE empID ='"+Lid+"'";
+          try {
+              pst  =con.prepareStatement(sql);
+                pst.execute();
+                
+                //table load
+                LecTableLoad();
+                this.dispose();
+                this.setVisible(true);
+          } catch (SQLException ex) {
+              System.out.println(ex);
+          }
+    
+      }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        String lempId = empId.getText().toString();
+        /*  Professor 1
+        Assistant Professor 2
+        Senior Lecturer(HG) 3
+        Senior Lecturer 4
+        Lecturer 5
+        Assistance Lecturer 6*/
+
+        int lvl =0 ;
+
+        if ("Professor" == levl.getSelectedItem().toString()) {
+            lvl =1;
+        }
+        if ("Assistant Professor" == levl.getSelectedItem().toString()) {
+            lvl =2;
+        }
+        if ("Senior Lecturer(HG)" == levl.getSelectedItem().toString()) {
+            lvl =3;
+        }
+        if ("Senior Lecturer" == levl.getSelectedItem().toString()) {
+            lvl =4;
+        }
+        if ("Lecturer" == levl.getSelectedItem().toString()) {
+            lvl =5;
+        }
+        if ("Assistance Lecturer" == levl.getSelectedItem().toString()) {
+            lvl =6;
+
+        }
+
+        // String lvl = level.getSelectedItem().toString();
+
+        rank.setText(lvl+"."+lempId);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int x = JOptionPane.showConfirmDialog(null, "Do you want to delete this");
+        
+        if(x==0){
+        
+        String id =empId.getText();
+        
+        String sql ="DELETE FROM lecturer WHERE empID='"+id+"' ";
+            try {
+                pst =con.prepareStatement(sql);
+                 pst.execute();
+                 
+                 //table lad
+                LecTableLoad();
+                this.dispose();
+                this.setVisible(true);
+                
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+       
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void empIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_empIdActionPerformed
 
     /**
      * @param args the command line arguments
@@ -432,18 +858,22 @@ public class Lecturer extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox Dept;
+    private javax.swing.JTextField LecName;
+    private javax.swing.JTable LecTable;
+    private javax.swing.JComboBox Lfaculty;
+    private javax.swing.JComboBox build;
     private java.awt.Button button1;
+    private javax.swing.JComboBox center;
+    private javax.swing.JTextField empId;
+    private javax.swing.JCheckBox fri;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
-    private javax.swing.JComboBox jComboBox4;
-    private javax.swing.JComboBox jComboBox5;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -464,11 +894,14 @@ public class Lecturer extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
+    private javax.swing.JComboBox levl;
+    private javax.swing.JCheckBox mon;
     private java.awt.Panel panel1;
+    private javax.swing.JLabel rank;
+    private javax.swing.JCheckBox sat;
+    private javax.swing.JCheckBox sun;
+    private javax.swing.JCheckBox thur;
+    private javax.swing.JCheckBox tue;
+    private javax.swing.JCheckBox wed;
     // End of variables declaration//GEN-END:variables
 }
