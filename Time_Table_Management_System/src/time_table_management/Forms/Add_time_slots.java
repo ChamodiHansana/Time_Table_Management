@@ -200,10 +200,12 @@ public class Add_time_slots extends javax.swing.JFrame {
        pst = con.prepareStatement(q);
        pst.execute();
        
-       Time_slots ts1 =new Time_slots();
-       ts1.setVisible(true);
+      Timeslots t = new Timeslots();
+      t.setVisible(true);
+      this.dispose();
+      
        
-       this.dispose();
+  
        
      
        }catch(Exception e){
