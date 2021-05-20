@@ -31,13 +31,20 @@ public class Time_slots extends javax.swing.JFrame {
         
        //connect to DB
         con = DBconnect.connect();
+        
+       
+        
        tableload(); 
        
     }
     
+    
+    
+   
+    
        public void tableload()
     {
-        String sql = "SELECT timeslotId, start_time, end_time FROM time_slots";
+        String sql = "SELECT timeslotId, start_time, end_time, workId FROM time_slots";
        try{
             pst = con.prepareStatement(sql);
             rs = pst.executeQuery();
@@ -259,7 +266,7 @@ public class Time_slots extends javax.swing.JFrame {
                     .addComponent(Delete))
                 .addGap(28, 28, 28)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
