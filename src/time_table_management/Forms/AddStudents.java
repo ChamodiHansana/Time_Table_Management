@@ -128,6 +128,7 @@ public class AddStudents extends javax.swing.JFrame {
             }
         });
 
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel10.setText("ADDING STUDENT");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -240,7 +241,7 @@ public class AddStudents extends javax.swing.JFrame {
         String SubGroupNo = SubGrNo.getText();
 
         try{
-            String q ="INSERT INTO student (groupID,subGroupID,groupNo,academcYear,semester,program,subGroupNo) values ('"+GroupID+"','"+SubGroupID+"','"+GroupNo+"','"+AcadamicYr+"','"+acadamicSem+"','"+Programme+"','"+SubGroupNo+"')";
+            String q ="INSERT INTO student(groupID,subGroupID,groupNo,academcYear,semester,program,subGroupNo) values ('"+GroupID+"','"+SubGroupID+"','"+GroupNo+"','"+AcadamicYr+"','"+acadamicSem+"','"+Programme+"','"+SubGroupNo+"')";
             pst = con.prepareStatement(q);        
             pst.execute();
     

@@ -371,7 +371,7 @@ public class Student extends javax.swing.JFrame {
                     .addComponent(jButton3))
                 .addGap(35, 35, 35)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(191, Short.MAX_VALUE))
+                .addGap(0, 45, Short.MAX_VALUE))
             .addComponent(panel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -389,8 +389,9 @@ public class Student extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(2, 2, 2)
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
 
         pack();
@@ -491,13 +492,13 @@ public class Student extends javax.swing.JFrame {
 
             String reg_ID = jLabel10.getText();
             
-            String sql = " DELETE FROM student WHERE reg_ID = '"+jLabel10+"' ";
+            String sql = " DELETE FROM student WHERE reg_ID = '"+reg_ID+"' ";
             
             try{
             pst = con.prepareStatement(sql);
             pst.execute();
             
-            AddStudents c1 = new AddStudents();
+            Student c1 = new Student();
             c1.setVisible(true);
             this.dispose();
             

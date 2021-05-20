@@ -39,7 +39,7 @@ public class ParrallelView extends javax.swing.JFrame {
     
     public void tableload(){
         try{
-            String  sql  = "SELECT semester,academcYear,groupNo,subGroupNo,subGroupID,groupID,program";
+            String  sql  = "SELECT sessionID,lecturer1,lecturer2,subject,subjectCode,tag,groupID,stuCount FROM parallelsession";
             pst = con.prepareStatement(sql);
             rs = pst.executeQuery();
             
@@ -78,7 +78,6 @@ public class ParrallelView extends javax.swing.JFrame {
         jPanel6.setPreferredSize(new java.awt.Dimension(1000, 625));
 
         panel1.setBackground(new java.awt.Color(64, 224, 208));
-        panel1.setPreferredSize(new java.awt.Dimension(200, 525));
 
         button1.setLabel("button1");
 
@@ -149,13 +148,13 @@ public class ParrallelView extends javax.swing.JFrame {
                 .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(156, 540, Short.MAX_VALUE)
-                        .addComponent(jButton3)
-                        .addGap(213, 213, 213))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 738, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(37, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton3)
+                        .addGap(213, 213, 213))))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -171,7 +170,6 @@ public class ParrallelView extends javax.swing.JFrame {
         );
 
         panel2.setBackground(new java.awt.Color(95, 158, 160));
-        panel2.setPreferredSize(new java.awt.Dimension(1000, 100));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Time Table Generator");
@@ -207,9 +205,9 @@ public class ParrallelView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 525, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(111, 111, 111))
+                .addGap(0, 0, 0))
         );
 
         pack();

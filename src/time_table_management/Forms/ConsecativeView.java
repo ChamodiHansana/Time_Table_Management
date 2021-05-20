@@ -39,7 +39,7 @@ public class ConsecativeView extends javax.swing.JFrame {
     
        public void tableload(){
         try{
-            String  sql  = "SELECT semester,academcYear,groupNo,subGroupNo,subGroupID,groupID,program";
+            String  sql  = "SELECT sessionID,lecturer1,lecturer2,subject,subjectCode,tag,groupID,stuCount FROM consecutivesession";
             pst = con.prepareStatement(sql);
             rs = pst.executeQuery();
             
@@ -75,7 +75,6 @@ public class ConsecativeView extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         panel2.setBackground(new java.awt.Color(95, 158, 160));
-        panel2.setPreferredSize(new java.awt.Dimension(1000, 100));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Time Table Generator");
@@ -101,7 +100,6 @@ public class ConsecativeView extends javax.swing.JFrame {
         jPanel6.setPreferredSize(new java.awt.Dimension(1000, 625));
 
         panel1.setBackground(new java.awt.Color(64, 224, 208));
-        panel1.setPreferredSize(new java.awt.Dimension(200, 525));
 
         button1.setLabel("button1");
 

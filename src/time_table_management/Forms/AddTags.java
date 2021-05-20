@@ -84,6 +84,7 @@ public class AddTags extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setText("ADDING TAG");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -163,14 +164,14 @@ public class AddTags extends javax.swing.JFrame {
     }//GEN-LAST:event_nameboxActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        
         //insert
         String name = namebox.getText();
         String code = codebox.getText();
         String tag = tagbox.getText();
 
         try{
-            String q ="INSERT INTO tag (tagCode,tagName,relatedTag) values ('"+name+"','"+code+"','"+tag+"')";
-
+            String q ="INSERT INTO tag (tagCode,tagName,relatedTag) values ('"+code+"','"+name+"','"+tag+"')";
             pst = con.prepareStatement(q);
             pst.execute();
 

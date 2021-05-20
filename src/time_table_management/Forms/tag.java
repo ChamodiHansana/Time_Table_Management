@@ -32,11 +32,11 @@ public class tag extends javax.swing.JFrame {
         con = DBConnect.connect();
         
         //load table
-        Tagtableload();
+        tableload();
         
     }
 
-    public void Tagtableload(){
+    public void tableload(){
         try{
             String  sql  = "SELECT tagID,tagCode,tagName,relatedTag FROM tag";
             pst = con.prepareStatement(sql);
@@ -296,7 +296,7 @@ public class tag extends javax.swing.JFrame {
                                     .addComponent(jButton3)
                                     .addComponent(jButton4)))))
                     .addComponent(jLabel5))
-                .addContainerGap(218, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
             .addComponent(panel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -315,7 +315,7 @@ public class tag extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 702, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -351,8 +351,7 @@ public class tag extends javax.swing.JFrame {
         int x = JOptionPane.showConfirmDialog(null, " Do you really want to update ");
         
         if(x == 0){
-            
-            
+
             String tagID = jLabel6.getText();
             String tagCode = namebox.getText();
             String tagName = codebox.getText();
@@ -365,7 +364,7 @@ public class tag extends javax.swing.JFrame {
             pst.execute();
             
             //table load
-            Tagtableload();
+            tableload();
             this.dispose();
             this.setVisible(true);
             
@@ -389,18 +388,18 @@ public class tag extends javax.swing.JFrame {
 
             String tagID = jLabel6.getText();
             
-            String sql = " DELETE FROM  tag WHERE tagID = '"+jLabel6+"' ";
+            String sql = " DELETE FROM  tag WHERE tagID = '"+tagID+"' ";
             
             try{
             pst = con.prepareStatement(sql);
             pst.execute();
             
-            AddTags c1 = new AddTags();
+            tag c1 = new tag();
             c1.setVisible(true);
             this.dispose();
             
             //table load
-            Tagtableload();
+            tableload();
             
             }
             catch(Exception e){    
